@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 
-url = "https://raw.githubusercontent.com/Victormartins2413/Recomendador-de-filmes/main/all_movies.csv"
-df = pd.read_csv(url)
+df = pd.read_csv("data/all_movies.csv")  # Altere o caminho conforme necessário
+
 
 
 # Função para exibir as informações do filme
