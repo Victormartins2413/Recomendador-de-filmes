@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 
-df = pd.read_csv("data/all_movies.csv")  # Altere o caminho conforme necessário
+df = pd.read_csv("data/all_movies.csv", delimiter=';')  # Ajuste o delimitador conforme o formato real do CSV
+
 
 
 
