@@ -1,10 +1,11 @@
 import streamlit as st
 import pandas as pd
 
-df = pd.read_csv("data/all_movies.csv", delimiter=';')  # Ajuste o delimitador conforme o formato real do CSV
-
-
-
+# Tente carregar o CSV
+try:
+    df = pd.read_csv("data/all_movies.csv", delimiter=';')  # Ajuste o delimitador conforme o formato real do CSV
+except Exception as e:
+    st.error(f"Erro ao ler o arquivo CSV: {e}")
 
 # Função para exibir as informações do filme
 def show_movie_info(title):
@@ -18,8 +19,11 @@ def show_movie_info(title):
 st.title("Sistema de Recomendação de Filmes")
 
 # Campo de seleção de filmes
-movie_choice = st.selectbox("Escolha um filme", df['title_pt'])
+if 'title_pt' in df.columns:
+    movie_choice = st.selectbox("Escolha um filme", df['title_pt'])
 
-# Exibir informações quando um filme for escolhido
-if st.button("Filtrar"):
-    show_movie_info(movie_choice)
+    # Exibir informações quando um filme for escolhido
+    if st.button("Filtrar"):
+        show_movie_info(movie_choice)
+else:
+    st.error("Coluna 'title_pt' não encontrada no DataFrame.")
