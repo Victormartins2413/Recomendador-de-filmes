@@ -1,24 +1,23 @@
-from flask import Flask, render_template, request
+import streamlit as st
 import pandas as pd
 
-app = Flask(__name__)
+# Carregando o CSV com as informações dos filmes
+df = pd.read_csv("all_movies.csv")
 
-# Carregar os dados
-path_to_export = 'all_movies.csv'  # Ajuste aqui
-df = pd.read_csv(path_to_export, sep=';')
+# Função para exibir as informações do filme
+def show_movie_info(title):
+    movie = df[df['title_pt'] == title].iloc[0]
+    st.write(f"**Título:** {movie['title_pt']}")
+    st.write(f"**Gênero:** {movie['genre']}")
+    st.write(f"**Ano:** {movie['year']}")
+    st.write(f"**Sinopse:** {movie['synopsis']}")
 
-@app.route('/')
-def index():
-    genres = df['genre'].unique()
-    return render_template('Filmes.html', genres=genres)
+# Configuração do título do webapp
+st.title("Sistema de Recomendação de Filmes")
 
-@app.route('/filter', methods=['POST'])
-def filter_movies():
-    selected_genre = request.form.get('genre')
-    selected_title = request.form.get('title')
+# Campo de seleção de filmes
+movie_choice = st.selectbox("Escolha um filme", df['title_pt'])
 
-    filtered_movies = df[(df['genre'] == selected_genre) & (df['title_pt'] == selected_title)]
-    return render_template('results.html', movies=filtered_movies)
-
-if __name__ == '__main__':
-    app.run()
+# Exibir informações quando um filme for escolhido
+if st.button("Filtrar"):
+    show_movie_info(movie_choice)
