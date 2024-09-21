@@ -15,8 +15,8 @@ def show_movie_info(title):
     st.write(f"**Título:** {movie['title_pt']}")
     st.write(f"**Gênero:** {movie['genre']}")
     st.write(f"**Ano:** {movie['year']}")
-    if 'synopsis' in movie:  # Verifique se a coluna existe
-        st.write(f"**Sinopse:** {movie['synopsis']}")
+    if 'sinopse' in movie:  # Verifique se a coluna existe
+        st.write(f"**Sinopse:** {movie['sinopse']}")
     else:
         st.write("**Sinopse:** Não disponível.")
 
@@ -29,6 +29,13 @@ if not df.empty and 'title_pt' in df.columns:
     # Exibir informações quando um filme for escolhido
     if st.button("Filtrar"):
         show_movie_info(movie_choice)
-else:
-    st.error("Coluna 'title_pt' não encontrada no DataFrame ou o DataFrame está vazio.")
 
+# Renderizar o HTML
+st.subheader("Detalhes dos Filmes")
+try:
+    # Carregar o conteúdo do arquivo HTML
+    with open("Filmes.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+    st.components.v1.html(html_content, height=600)  # Ajuste a altura conforme necessário
+except FileNotFoundError:
+    st.error("Arquivo HTML 'Filmes.html' não encontrado.")
